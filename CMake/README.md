@@ -24,10 +24,10 @@ In your `CMakeLists.txt` add lines **inside** your `PROJECT(...)`:
     GET_FILENAME_COMPONENT(BWAPI_ROOT ${CMAKE_SOURCE_DIR}/deps/bwapi/bwapi ABSOLUTE)
     INCLUDE_DIRECTORIES(${BWAPI_ROOT}/include ${BWAPI_ROOT}/Util/Source)
 
-And in linker section add lines:
+And in linker section add lines (NOTE the "" around dashed words):
 
-    ADD_DEPENDENCIES(YourProject BWAPI-Staticd)
-    ADD_DEPENDENCIES(YourProject BWAPIClientd)
+    ADD_DEPENDENCIES(YourProject "BWAPI-Static")
+    ADD_DEPENDENCIES(YourProject "BWAPI-Client-Static")
 
 If you build as release, remove `d` and use `BWAPI` and `BWAPIClient` instead.
 
