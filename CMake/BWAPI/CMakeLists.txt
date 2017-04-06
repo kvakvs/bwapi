@@ -1,4 +1,4 @@
-project(BWAPI-Client CXX)
+project(BWAPI CXX)
 
 # Define this variable BWAPI_CUSTOM_COMPILE_FLAGS to set your compile flags
 IF(BWAPI_CUSTOM_COMPILE_FLAGS)
@@ -7,11 +7,10 @@ ENDIF(BWAPI_CUSTOM_COMPILE_FLAGS)
 
 SET(BWAPI_DLL_NAME BWAPI)
 
+SET(BWAPI_LIB_NAME "BWAPI-Static")
 IF(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    SET(BWAPI_LIB_NAME "BWAPI-Staticd")
     SET(CMAKE_CONFIGURATION_TYPES "Debug" CACHE STRING "" FORCE)
 ELSE()
-    SET(BWAPI_LIB_NAME "BWAPI-Static")
     SET(CMAKE_CONFIGURATION_TYPES "Release" CACHE STRING "" FORCE)
 ENDIF()
 
@@ -107,11 +106,11 @@ SOURCE_GROUP("BWAPI" FILES ${BWAPI_INCLUDES})
 SET(BWAPI_BWAPI_DIR ${BWAPI_ROOT}/BWAPI/Source)
 INCLUDE_DIRECTORIES(${BWAPI_BWAPI_DIR} ${BWAPI_BWAPI_DIR}/BWAPI)
 
-SET(BWAPI_BWAPILIB_DIR ${BWAPI_ROOT}/BWAPILib/Source)
+SET(BWAPI_BWAPILIB_DIR ${BWAPI_ROOT}/BWAPILIB/Source)
 
 SET(BWAPI_BWAPI_SRC
-    ${BWAPI_BWAPI_DIR}/Assembly.cpp
-    ${BWAPI_BWAPI_DIR}/Assembly.h
+    #${BWAPI_BWAPI_DIR}/Assembly.cpp    # contains Microsoft Assembly
+    #${BWAPI_BWAPI_DIR}/Assembly.h
     ${BWAPI_BWAPI_DIR}/BW/AIController.h
     ${BWAPI_BWAPI_DIR}/BW/Bitmap.cpp
     ${BWAPI_BWAPI_DIR}/BW/Bitmap.h
@@ -255,7 +254,7 @@ SET(BWAPI_BWAPI_SRC
     ${BWAPI_ROOT}/BWAPICore/APMCounter.h
     ${BWAPI_ROOT}/BWAPICore/FPSCounter.cpp
     ${BWAPI_ROOT}/BWAPICore/FPSCounter.h
-    ${BWAPI_ROOT}/BWAPILib/UnitCommand.cpp
+    ${BWAPI_ROOT}/BWAPILIB/UnitCommand.cpp
     )
 SOURCE_GROUP("BWAPI/BWAPI" FILES ${BWAPI_BWAPI_SRC})
 
@@ -276,8 +275,8 @@ SET(BWAPI_UTIL_SRC
     ${BWAPI_UTIL_DIR}/Util/RemoteProcess.cpp
     ${BWAPI_UTIL_DIR}/Util/RemoteProcess.h
     ${BWAPI_UTIL_DIR}/Util/RemoteProcessID.h
-    ${BWAPI_UTIL_DIR}/Util/sha1.cpp
-    ${BWAPI_UTIL_DIR}/Util/sha1.h
+    ${BWAPI_UTIL_DIR}/Util/Sha1.cpp
+    ${BWAPI_UTIL_DIR}/Util/Sha1.h
     ${BWAPI_UTIL_DIR}/Util/SharedMemory.cpp
     ${BWAPI_UTIL_DIR}/Util/SharedMemory.h
     ${BWAPI_UTIL_DIR}/Util/SharedStructure.h
@@ -300,9 +299,15 @@ SET(BWAPI_SHARED_SRC
     )
 SOURCE_GROUP("BWAPI/Shared" FILES ${BWAPI_SHARED_SRC})
 
-ADD_CUSTOM_COMMAND(OUTPUT ${BWAPI_ROOT}/svnrev.h PRE_BUILD
-        COMMAND cscript.exe ${BWAPI_ROOT}/revisionUpdate.vbs
-        WORKING_DIRECTORY ${BWAPI_ROOT})
+IF (NOT ${CMAKE_CXX_COMPILER} MATCHES ".*mingw.*")
+    ADD_CUSTOM_COMMAND(OUTPUT ${BWAPI_ROOT}/svnrev.h PRE_BUILD
+            COMMAND cscript.exe ${BWAPI_ROOT}/revisionUpdate.vbs
+            WORKING_DIRECTORY ${BWAPI_ROOT})
+ELSE()
+    ADD_CUSTOM_COMMAND(OUTPUT ${BWAPI_ROOT}/svnrev.h PRE_BUILD
+            COMMAND ${BWAPI_ROOT}/revisionUpdate.sh
+            WORKING_DIRECTORY ${BWAPI_ROOT})
+ENDIF()
 
 SET(BWAPI_EVERYTHING
         ${BWAPI_BWAPI_SRC}

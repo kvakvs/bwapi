@@ -5,11 +5,10 @@ IF(BWAPI_CUSTOM_COMPILE_FLAGS)
     ADD_DEFINITIONS(${BWAPI_CUSTOM_COMPILE_FLAGS})
 ENDIF(BWAPI_CUSTOM_COMPILE_FLAGS)
 
+SET(BWAPICLIENT_LIB_NAME "BWAPI-Client-Static")
 IF (CMAKE_BUILD_TYPE STREQUAL "Debug")
-    SET(BWAPICLIENT_LIB_NAME BWAPIClientd)
     SET(CMAKE_CONFIGURATION_TYPES "Debug" CACHE STRING "" FORCE)
 ELSE ()
-    SET(BWAPICLIENT_LIB_NAME BWAPIClient)
     SET(CMAKE_CONFIGURATION_TYPES "Release" CACHE STRING "" FORCE)
 ENDIF ()
 
@@ -60,8 +59,8 @@ SET(BWAPI_UTIL_SRC
         ${BWAPI_UTIL_DIR}/Util/RemoteProcess.cpp
         ${BWAPI_UTIL_DIR}/Util/RemoteProcess.h
         ${BWAPI_UTIL_DIR}/Util/RemoteProcessID.h
-        ${BWAPI_UTIL_DIR}/Util/sha1.cpp
-        ${BWAPI_UTIL_DIR}/Util/sha1.h
+        ${BWAPI_UTIL_DIR}/Util/Sha1.cpp
+        ${BWAPI_UTIL_DIR}/Util/Sha1.h
         ${BWAPI_UTIL_DIR}/Util/SharedMemory.cpp
         ${BWAPI_UTIL_DIR}/Util/SharedMemory.h
         ${BWAPI_UTIL_DIR}/Util/SharedStructure.h

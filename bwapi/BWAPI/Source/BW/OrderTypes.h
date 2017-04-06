@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #include <Util/Types.h>
 
 #include <BWAPI/Position.h>

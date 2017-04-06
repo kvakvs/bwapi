@@ -124,7 +124,9 @@ namespace BWAPI
       std::cerr << "Client version: " << BWAPI::CLIENT_VERSION << std::endl;
       std::cerr << "Server version: " << BWAPI::Broodwar->getClientVersion() << std::endl;
       disconnect();
+#ifdef _MSC_VER
       std::this_thread::sleep_for(std::chrono::milliseconds{ 2000 });
+#endif
       return false;
     }
     //wait for permission from server before we resume execution
